@@ -36,4 +36,11 @@
   <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/2.jpg?raw=true" alt="Login Screen" width="300"/>
   <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/3.jpg?raw=true" alt="Register Screen" width="300"/>
   <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/1.jpg?raw=true" alt="Home Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/5.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/6.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/7.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/8.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/9.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/10.jpg?raw=true" alt="Screen" width="300"/>
+  <img src="https://github.com/abhikam395/AuthFlow/blob/develop/assets/images/11.jpg?raw=true" alt="Screen" width="300"/>
 </div>
