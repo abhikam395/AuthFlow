@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text, ToastAndroid} from 'react-native';
 import { register } from '../services/authService';
 import { registerValidation } from '../utils/authInputValidation';
 import { BLUE } from '../utils/commoncolors';
+import { saveToken, saveUser } from '../utils/sharedPreferences';
 import CustomTextInput from './CustomTextInputComponent';
 
 export default class RegisterFormComponent extends Component{
@@ -23,22 +24,32 @@ export default class RegisterFormComponent extends Component{
 
     navigateToLoginScreen(){
         let {navigation} = this.props;
-        navigation.navigate('Login');
+        navigation.replace('Login');
     }
 
 
     async registerUser(){
-        const validation = registerValidation(this.state);
-        if(validation !== true){
+        let {navigation} = this.props;
+        const validation =  registerValidation(this.state);
+        if(validation !== true)
             this.setState({error: validation});
-        }
         else {
-            this.setState({error: null})
+            this.setState({error: null});
             try {
-                const user = await register(this.state);
-                console.log(user);
+                const response = await register(this.state);
+                if(response.status == 'ok'){
+                    const {token, user} = response.data;
+                    saveUser(JSON.stringify(user));
+                    saveToken(token);
+                    ToastAndroid.show('Successfully Registered', 1000);
+                    navigation.replace('Home')
+                }
+                else throw response.message;
             } catch (error) {
-                console.log(error)
+                if(error == 'Username already taken')
+                    this.setState({error: {username: 'Username already taken'}});
+                else if (error == 'Email already taken')
+                    this.setState({error: {email: 'Email already taken'}})
             }
         }
     }

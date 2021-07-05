@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
-import { login, register } from '../services/authService';
+import {StyleSheet, View, TouchableOpacity, Text, ToastAndroid} from 'react-native';
+import { login } from '../services/authService';
 import { loginValidation } from '../utils/authInputValidation';
 import { BLUE } from '../utils/commoncolors';
+import { saveToken, saveUser } from '../utils/sharedPreferences';
 import CustomTextInput from './CustomTextInputComponent';
 
 export default class LoginFormComponent extends Component{
@@ -11,7 +12,8 @@ export default class LoginFormComponent extends Component{
         this.state = {
             email: '',
             password: '',
-            error: null
+            error: null,
+            loading: false
         }
         this.loginUser = this.loginUser.bind(this);
         this.navigateToRegisterScreen = this.navigateToRegisterScreen.bind(this);
@@ -19,21 +21,31 @@ export default class LoginFormComponent extends Component{
 
     navigateToRegisterScreen(){
         let {navigation} = this.props;
-        navigation.navigate('Register');
+        navigation.replace('Register');
     }
 
     async loginUser(){
+        const {navigation} = this.props;
         const validation = loginValidation(this.state);
-        if(validation !== true){
+        if(validation !== true)
             this.setState({error: validation});
-        }
         else {
-            this.setState({error: null})
+            this.setState({error: null});
             try {
-                const user = await login(this.state);
-                console.log(user);
+                const response = await login(this.state);
+                if(response.status == 'ok'){
+                    const {token, user} = response.data;
+                    saveUser(JSON.stringify(user));
+                    saveToken(token);
+                    ToastAndroid.show('Successfully Login', 1000);
+                    navigation.replace('Home')
+                }
+                else throw response.message;
             } catch (error) {
-                console.log(error)
+                if(error == 'User not registered')
+                    this.setState({error: {email: 'User not registered'}});
+                else if (error == 'Check your password')
+                    this.setState({error: {password: 'Check your password'}})
             }
         }
     }
